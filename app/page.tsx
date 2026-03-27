@@ -1,3 +1,4 @@
+import { Footer } from "@/components/footer";
 import { MasonryGrid } from "@/components/masonry-grid";
 
 export default function Home() {
@@ -5,6 +6,7 @@ export default function Home() {
     <div className="flex flex-1 flex-col bg-white font-sans text-black">
       <main className="flex flex-1 flex-col">
         <MasonryGrid />
+        <Footer />
       </main>
     </div>
   );
