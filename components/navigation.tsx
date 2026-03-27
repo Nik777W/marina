@@ -5,13 +5,22 @@ import { type ComponentType } from "react";
 import * as Lucide from "lucide-react";
 
 export function Navigation() {
-  const InstagramIcon =
-    (Lucide as Record<string, ComponentType<{ className?: string; strokeWidth?: number }>>).Instagram ??
-    Lucide.Camera;
-  const TelegramIcon =
-    (Lucide as Record<string, ComponentType<{ className?: string; strokeWidth?: number }>>).Send ??
-    Lucide.SendHorizontal;
-  const MailIcon = Lucide.Mail;
+  type IconComponent = ComponentType<{
+    className?: string;
+    strokeWidth?: number;
+  }>;
+
+  // `lucide-react` exports are large and the exact typings can differ by version.
+  // We only need icon components, so we extract them dynamically and cast safely.
+  const InstagramIcon = (Lucide as any).Instagram
+    ? ((Lucide as any).Instagram as IconComponent)
+    : ((Lucide as any).Camera as IconComponent);
+
+  const TelegramIcon = (Lucide as any).Send
+    ? ((Lucide as any).Send as IconComponent)
+    : ((Lucide as any).SendHorizontal as IconComponent);
+
+  const MailIcon = (Lucide as any).Mail as IconComponent;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-white px-4 py-6 md:px-8">
