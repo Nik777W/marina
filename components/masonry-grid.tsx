@@ -65,7 +65,7 @@ export function MasonryGrid() {
                   src={photo.src}
                   alt={photo.alt}
                   fill
-                  className={`object-cover transition-all duration-500 grayscale hover:grayscale-0 ${
+                  className={`object-cover md:grayscale md:transition-all md:duration-500 md:hover:scale-105 md:hover:grayscale-0 ${
                     loadedImages.has(photo.id) ? "opacity-100" : "opacity-0"
                   }`}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
