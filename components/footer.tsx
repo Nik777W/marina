@@ -22,6 +22,10 @@ export function Footer() {
 
   const MailIcon = (Lucide as any).Mail as IconComponent;
 
+  const LoginIcon = (Lucide as any).LogIn
+    ? ((Lucide as any).LogIn as IconComponent)
+    : ((Lucide as any).UserRound as IconComponent);
+
   return (
     <footer className="w-full border-t border-black/10 bg-white px-4 py-12 md:px-8">
       <div className="mx-auto max-w-7xl">
@@ -63,6 +67,13 @@ export function Footer() {
               aria-label="Email"
             >
               <MailIcon className="h-5 w-5" strokeWidth={1.5} />
+            </Link>
+            <Link
+              href="/auth/login"
+              className="text-black/50 transition-colors duration-300 hover:text-black/70"
+              aria-label="Войти"
+            >
+              <LoginIcon className="h-4 w-4" strokeWidth={1.5} />
             </Link>
           </div>
 
