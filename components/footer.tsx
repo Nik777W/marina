@@ -26,11 +26,14 @@ export function Footer() {
     <footer className="w-full border-t border-black/10 bg-white px-4 py-12 md:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-6">
-          <Link href="/" className="flex flex-col items-center">
-            <span className="font-serif text-xl tracking-wide text-black md:text-2xl">
+          <Link
+            href="/"
+            className="flex flex-col items-center text-black/50 transition-colors duration-300 hover:text-black/70"
+          >
+            <span className="font-serif text-xl tracking-wide md:text-2xl">
               Marina Koptyakova
             </span>
-            <span className="mt-1 font-sans text-xs font-light uppercase tracking-[0.2em] text-black">
+            <span className="mt-1 font-sans text-xs font-light uppercase tracking-[0.2em]">
               Lifestyle & Family Photographer
             </span>
           </Link>
@@ -40,7 +43,7 @@ export function Footer() {
               href="https://www.instagram.com/marikopt?igsh=bWY5Y2Y3amdocXUz&utm_source=qr"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black transition-opacity duration-300 hover:opacity-70"
+              className="text-black/50 transition-colors duration-300 hover:text-black/70"
               aria-label="Instagram"
             >
               <InstagramIcon className="h-5 w-5" strokeWidth={1.5} />
@@ -49,14 +52,14 @@ export function Footer() {
               href="https://t.me/mari_kopt"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black transition-opacity duration-300 hover:opacity-70"
+              className="text-black/50 transition-colors duration-300 hover:text-black/70"
               aria-label="Telegram"
             >
               <TelegramIcon className="h-5 w-5" strokeWidth={1.5} />
             </Link>
             <Link
               href="mailto:contact@marinakoptyakova.com"
-              className="text-black transition-opacity duration-300 hover:opacity-70"
+              className="text-black/50 transition-colors duration-300 hover:text-black/70"
               aria-label="Email"
             >
               <MailIcon className="h-5 w-5" strokeWidth={1.5} />
@@ -64,7 +67,7 @@ export function Footer() {
           </div>
 
           <div className="w-full max-w-md border-t border-black/10 pt-4 text-center">
-            <p className="font-sans text-sm font-light text-black">
+            <p className="font-sans text-sm font-light text-black/50">
               &copy; {currentYear} Marina Koptyakova. All rights reserved.
             </p>
           </div>
