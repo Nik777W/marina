@@ -1,55 +1,42 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { useState } from "react";
 
-import photo1 from "@/photos/photo-1.jpg";
-import photo2 from "@/photos/photo-2.jpg";
-import photo3 from "@/photos/photo-3.jpg";
-import photo4 from "@/photos/photo-4.jpg";
-import photo5 from "@/photos/photo-5.jpg";
-import photo6 from "@/photos/photo-6.jpg";
-import photo7 from "@/photos/photo-7.jpg";
-import photo8 from "@/photos/photo-8.jpg";
-import photo9 from "@/photos/photo-9.jpg";
+import type { GalleryAspectRatio, GalleryPhotoPublic } from "@/lib/gallery";
 
-interface Photo {
-  id: number;
-  src: StaticImageData;
-  alt: string;
-  aspectRatio: "portrait" | "landscape" | "square" | "tall";
-}
-
-const photos: Photo[] = [
-  { id: 1, src: photo1, alt: "Portrait photography", aspectRatio: "portrait" },
-  { id: 2, src: photo2, alt: "Street photography", aspectRatio: "square" },
-  { id: 3, src: photo3, alt: "Fashion photography", aspectRatio: "tall" },
-  { id: 4, src: photo4, alt: "Portrait photography", aspectRatio: "portrait" },
-  { id: 5, src: photo5, alt: "Lifestyle photography", aspectRatio: "landscape" },
-  { id: 6, src: photo6, alt: "Family photography", aspectRatio: "portrait" },
-  { id: 7, src: photo7, alt: "Portrait photography", aspectRatio: "tall" },
-  { id: 8, src: photo8, alt: "Lifestyle photography", aspectRatio: "square" },
-  { id: 9, src: photo9, alt: "Portrait photography", aspectRatio: "portrait" },
-];
-
-const aspectRatioClasses = {
+const aspectRatioClasses: Record<GalleryAspectRatio, string> = {
   portrait: "aspect-[3/4]",
   landscape: "aspect-[4/3]",
   square: "aspect-square",
   tall: "aspect-[2/3]",
 };
 
-export function MasonryGrid() {
-  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+type MasonryGridProps = {
+  photos: GalleryPhotoPublic[];
+};
 
-  const handleImageLoad = (id: number) => {
+export function MasonryGrid({ photos }: MasonryGridProps) {
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+  const handleImageLoad = (id: string) => {
     setLoadedImages((prev) => new Set(prev).add(id));
   };
 
-  const columns: Photo[][] = [[], [], []];
+  const columns: GalleryPhotoPublic[][] = [[], [], []];
   photos.forEach((photo, index) => {
     columns[index % 3].push(photo);
   });
+
+  if (photos.length === 0) {
+    return (
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 md:px-8">
+        <p className="text-center text-sm text-black/50">
+          Фотографии появятся здесь после загрузки в личном кабинете.
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-12 md:px-8">
