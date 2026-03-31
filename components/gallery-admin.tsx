@@ -138,6 +138,7 @@ export function GalleryAdmin() {
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-2">
                 <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-medium text-black/60">#{index + 1}</span>
                   <label className="flex items-center gap-2 text-sm text-black/70">
                     <input
                       type="checkbox"
@@ -149,22 +150,7 @@ export function GalleryAdmin() {
                   {!row.is_visible && (
                     <span className="text-xs text-amber-700">скрыто</span>
                   )}
-                </div>
-                <input
-                  type="text"
-                  defaultValue={row.alt_text}
-                  placeholder="Подпись (alt)"
-                  className="w-full rounded border border-black/15 px-2 py-1 text-sm"
-                  key={`${row.id}-alt-${row.alt_text}`}
-                  onBlur={(e) => {
-                    const v = e.target.value;
-                    if (v !== row.alt_text) {
-                      void saveMeta(row.id, v);
-                    }
-                  }}
-                />
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex gap-1">
+                  <div className="flex gap-1 ml-auto">
                     <button
                       type="button"
                       disabled={index === 0}
@@ -190,6 +176,19 @@ export function GalleryAdmin() {
                     </button>
                   </div>
                 </div>
+                <input
+                  type="text"
+                  defaultValue={row.alt_text}
+                  placeholder="Подпись (alt)"
+                  className="w-full rounded border border-black/15 px-2 py-1 text-sm"
+                  key={`${row.id}-alt-${row.alt_text}`}
+                  onBlur={(e) => {
+                    const v = e.target.value;
+                    if (v !== row.alt_text) {
+                      void saveMeta(row.id, v);
+                    }
+                  }}
+                />
               </div>
             </li>
           ))}
