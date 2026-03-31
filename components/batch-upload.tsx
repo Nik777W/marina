@@ -10,6 +10,7 @@ interface BatchUploadProps {
 
 interface FileWithPreview {
   file: File;
+  compressedBlob?: Blob;
   id: string;
   status: "pending" | "uploading" | "completed" | "error";
   error?: string;
@@ -18,6 +19,56 @@ interface FileWithPreview {
 }
 
 const ACCEPTED_TYPES = "image/jpeg,image/png,image/webp,image/gif";
+
+// Image compression function
+async function compressImage(file: File): Promise<{ blob: Blob; width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      
+      const canvas = document.createElement('canvas');
+      const maxWidth = 2400;
+      const scale = Math.min(1, maxWidth / img.naturalWidth);
+      
+      canvas.width = img.naturalWidth * scale;
+      canvas.height = img.naturalHeight * scale;
+      
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Failed to get canvas context'));
+        return;
+      }
+      
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve({
+              blob,
+              width: canvas.width,
+              height: canvas.height,
+            });
+          } else {
+            reject(new Error('Failed to create blob'));
+          }
+        },
+        'image/webp',
+        0.85
+      );
+    };
+    
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error('Failed to load image'));
+    };
+    
+    img.src = objectUrl;
+  });
+}
 
 // Simple UUID generator compatible with SSR
 function generateUUID(): string {
@@ -45,36 +96,54 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
     setIsDragging(false);
   }, []);
 
-  const addFiles = useCallback((fileList: FileList | null) => {
+  const addFiles = useCallback(async (fileList: FileList | null) => {
     if (!fileList) return;
 
-    Array.from(fileList).forEach((file) => {
+    for (const file of Array.from(fileList)) {
       if (file.type.startsWith("image/")) {
         const id = generateUUID();
-        const newFile: FileWithPreview = {
-          file,
-          id,
-          status: "pending",
-        };
+        
+        // Add file immediately with pending status
+        setFiles((prev) => [
+          ...prev,
+          {
+            file,
+            id,
+            status: "pending",
+          },
+        ]);
 
-        // Read image dimensions
-        const img = new Image();
-        const objectUrl = URL.createObjectURL(file);
-        img.onload = () => {
-          URL.revokeObjectURL(objectUrl);
+        try {
+          // Compress image
+          const { blob, width, height } = await compressImage(file);
+          
+          // Update file with compressed blob and dimensions
           setFiles((prev) =>
             prev.map((f) =>
               f.id === id
-                ? { ...f, width: img.naturalWidth, height: img.naturalHeight }
+                ? { ...f, compressedBlob: blob, width, height }
                 : f
             )
           );
-        };
-        img.src = objectUrl;
-
-        setFiles((prev) => [...prev, newFile]);
+        } catch (error) {
+          console.error('Compression failed:', error);
+          // Keep original file if compression fails
+          const img = new Image();
+          const objectUrl = URL.createObjectURL(file);
+          img.onload = () => {
+            URL.revokeObjectURL(objectUrl);
+            setFiles((prev) =>
+              prev.map((f) =>
+                f.id === id
+                  ? { ...f, width: img.naturalWidth, height: img.naturalHeight }
+                  : f
+              )
+            );
+          };
+          img.src = objectUrl;
+        }
       }
-    });
+    }
   }, []);
 
   const handleDrop = useCallback(
@@ -130,13 +199,14 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
         );
 
         try {
-          const file = fileWithPreview.file;
-          const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+          // Use compressed blob if available, otherwise original file
+          const uploadData = fileWithPreview.compressedBlob || fileWithPreview.file;
+          const ext = fileWithPreview.compressedBlob ? 'webp' : (fileWithPreview.file.name.split(".").pop()?.toLowerCase() || "jpg");
           const path = `${generateUUID()}.${ext}`;
 
           const { error: upErr } = await supabase.storage
             .from("gallery")
-            .upload(path, file, { cacheControl: "3600", upsert: false });
+            .upload(path, uploadData, { cacheControl: "3600", upsert: false });
 
           if (upErr) throw upErr;
 
@@ -270,8 +340,13 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
                     {fileWithPreview.file.name}
                   </span>
                   <span className="shrink-0 text-xs text-black/40">
-                    {(fileWithPreview.file.size / 1024 / 1024).toFixed(1)} MB
-                  </span>
+                  {((fileWithPreview.compressedBlob?.size || fileWithPreview.file.size) / 1024 / 1024).toFixed(1)} MB
+                  {fileWithPreview.compressedBlob && (
+                    <span className="text-green-600 ml-1">
+                      ({Math.round((1 - fileWithPreview.compressedBlob.size / fileWithPreview.file.size) * 100)}% меньше)
+                    </span>
+                  )}
+                </span>
                 </div>
                 {fileWithPreview.status === "error" && (
                   <span className="shrink-0 text-xs text-red-600">
