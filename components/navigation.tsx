@@ -37,16 +37,67 @@ export function Navigation() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-white px-4 py-4 md:py-6 md:px-8">
       <nav className="mx-auto flex max-w-7xl flex-col md:flex-row items-center justify-between gap-2 md:gap-0">
-        <Link href="/" className="flex flex-col items-center md:items-start">
-          <span className="font-serif text-xl md:text-2xl tracking-wide text-black lg:text-3xl">
+        {/* Mobile: Row 1 - Title + Icons */}
+        <div className="flex w-full items-center justify-between md:hidden">
+          <Link href="/" className="flex flex-col items-start">
+            <span className="font-serif text-xl tracking-wide text-black">
+              Marina Koptyakova
+            </span>
+            <span className="mt-1 font-sans text-[10px] font-light uppercase tracking-[0.15em] text-black max-w-full truncate">
+              Lifestyle & Family Photographer
+            </span>
+          </Link>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href="https://www.instagram.com/marikopt?igsh=bWY5Y2Y3amdocXUz&utm_source=qr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-black transition-opacity duration-300 hover:opacity-70"
+              aria-label="Instagram"
+            >
+              <InstagramIcon className="h-5 w-5" strokeWidth={1.5} />
+            </Link>
+            <Link
+              href="https://t.me/mari_kopt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-black transition-opacity duration-300 hover:opacity-70"
+              aria-label="Telegram"
+            >
+              <TelegramIcon className="h-5 w-5" strokeWidth={1.5} />
+            </Link>
+            <Link
+              href="mailto:contact@marinakoptyakova.com"
+              className="text-black transition-opacity duration-300 hover:opacity-70"
+              aria-label="Email"
+            >
+              <MailIcon className="h-5 w-5" strokeWidth={1.5} />
+            </Link>
+          </div>
+        </div>
+
+        {/* Mobile: Nav links below - aligned right under icons */}
+        <nav className="flex md:hidden gap-4 text-xs w-full justify-end">
+          <a href="#about" className="text-black/60 hover:text-black transition-colors">Обо мне</a>
+          <a href="#pricing" className="text-black/60 hover:text-black transition-colors">Цены</a>
+        </nav>
+
+        {/* Desktop: Title left, Nav + Icons right */}
+        <Link href="/" className="hidden md:flex flex-col items-start">
+          <span className="font-serif text-2xl lg:text-3xl tracking-wide text-black">
             Marina Koptyakova
           </span>
-          <span className="mt-1 font-sans text-[10px] md:text-xs font-light uppercase tracking-[0.15em] md:tracking-[0.2em] text-black max-w-full truncate">
+          <span className="mt-1 font-sans text-xs font-light uppercase tracking-[0.2em] text-black max-w-full truncate">
             Lifestyle & Family Photographer
           </span>
         </Link>
 
-        <div className="flex items-center gap-3 md:gap-6">
+        <div className="hidden md:flex items-center gap-6">
+          <nav className="flex gap-6 mr-4">
+            <a href="#about" className="text-sm text-black/60 hover:text-black transition-colors">Обо мне</a>
+            <a href="#pricing" className="text-sm text-black/60 hover:text-black transition-colors">Цены</a>
+          </nav>
           <Link
             href="https://www.instagram.com/marikopt?igsh=bWY5Y2Y3amdocXUz&utm_source=qr"
             target="_blank"
@@ -54,7 +105,7 @@ export function Navigation() {
             className="text-black transition-opacity duration-300 hover:opacity-70"
             aria-label="Instagram"
           >
-            <InstagramIcon className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
+            <InstagramIcon className="h-6 w-6" strokeWidth={1.5} />
           </Link>
           <Link
             href="https://t.me/mari_kopt"
@@ -63,26 +114,16 @@ export function Navigation() {
             className="text-black transition-opacity duration-300 hover:opacity-70"
             aria-label="Telegram"
           >
-            <TelegramIcon className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
+            <TelegramIcon className="h-6 w-6" strokeWidth={1.5} />
           </Link>
           <Link
             href="mailto:contact@marinakoptyakova.com"
             className="text-black transition-opacity duration-300 hover:opacity-70"
             aria-label="Email"
           >
-            <MailIcon className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
+            <MailIcon className="h-6 w-6" strokeWidth={1.5} />
           </Link>
         </div>
-
-        <nav className="flex md:hidden gap-4 text-xs">
-          <a href="#about" className="text-black/60 hover:text-black transition-colors">Обо мне</a>
-          <a href="#pricing" className="text-black/60 hover:text-black transition-colors">Цены</a>
-        </nav>
-
-        <nav className="hidden md:flex gap-6">
-          <a href="#about" className="text-sm text-black/60 hover:text-black transition-colors">Обо мне</a>
-          <a href="#pricing" className="text-sm text-black/60 hover:text-black transition-colors">Цены</a>
-        </nav>
       </nav>
     </header>
   );
