@@ -9,6 +9,8 @@ export function AboutSection() {
           alt="Марина Коптякова"
           fill
           className="rounded-full object-cover"
+          unoptimized
+          priority
         />
       </div>
       <h2 className="text-xl font-medium mb-4">Привет, я Марина</h2>
