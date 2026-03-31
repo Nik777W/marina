@@ -17,6 +17,15 @@ interface FileWithPreview {
 
 const ACCEPTED_TYPES = "image/jpeg,image/png,image/webp,image/gif";
 
+// Simple UUID generator compatible with SSR
+function generateUUID(): string {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -42,7 +51,7 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
       if (file.type.startsWith("image/")) {
         newFiles.push({
           file,
-          id: crypto.randomUUID(),
+          id: generateUUID(),
           status: "pending",
         });
       }
@@ -106,7 +115,7 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
         try {
           const file = fileWithPreview.file;
           const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-          const path = `${crypto.randomUUID()}.${ext}`;
+          const path = `${generateUUID()}.${ext}`;
 
           const { error: upErr } = await supabase.storage
             .from("gallery")
