@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 import type { GalleryAspectRatio, GalleryPhotoRow } from "@/lib/gallery";
@@ -19,7 +18,6 @@ export function GalleryAdmin() {
   const [rows, setRows] = useState<GalleryPhotoRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -41,44 +39,6 @@ export function GalleryAdmin() {
   useEffect(() => {
     void load();
   }, [load]);
-
-  async function handleUpload(fileList: FileList | null) {
-    const file = fileList?.[0];
-    if (!file) return;
-    const supabase = createClient();
-    setUploading(true);
-    setError(null);
-    try {
-      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-      const path = `${crypto.randomUUID()}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from("gallery")
-        .upload(path, file, { cacheControl: "3600", upsert: false });
-      if (upErr) throw upErr;
-
-      const { data: topRow } = await supabase
-        .from("gallery_photos")
-        .select("sort_order")
-        .order("sort_order", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      const maxOrder = topRow?.sort_order ?? 0;
-
-      const { error: insErr } = await supabase.from("gallery_photos").insert({
-        storage_path: path,
-        alt_text: "",
-        aspect_ratio: "portrait",
-        is_visible: true,
-        sort_order: maxOrder + 10,
-      });
-      if (insErr) throw insErr;
-      await load();
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Upload failed");
-    } finally {
-      setUploading(false);
-    }
-  }
 
   async function saveMeta(id: string, alt_text: string, aspect_ratio: GalleryAspectRatio) {
     const supabase = createClient();
@@ -152,34 +112,11 @@ export function GalleryAdmin() {
 
   return (
     <div className="flex w-full max-w-4xl flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-medium text-black">Галерея</h1>
-          <p className="text-sm text-black/50">
-            Загрузка, порядок, видимость на главной и подписи.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/"
-            className="rounded-md border border-black/15 px-3 py-1.5 text-sm text-black/80 hover:bg-black/5"
-          >
-            На сайт
-          </Link>
-          <label className="cursor-pointer rounded-md bg-black px-3 py-1.5 text-sm text-white hover:bg-black/85">
-            {uploading ? "Загрузка…" : "Добавить фото"}
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp,image/gif"
-              className="hidden"
-              disabled={uploading}
-              onChange={(e) => {
-                void handleUpload(e.target.files);
-                e.target.value = "";
-              }}
-            />
-          </label>
-        </div>
+      <div>
+        <h1 className="text-lg font-medium text-black">Галерея</h1>
+        <p className="text-sm text-black/50">
+          Порядок, видимость на главной и подписи.
+        </p>
       </div>
 
       {error && (

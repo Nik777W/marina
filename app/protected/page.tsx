@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { BatchUpload } from "@/components/batch-upload";
 import { GalleryAdmin } from "@/components/gallery-admin";
 import { LogoutButton } from "@/components/logout-button";
 import { createClient } from "@/lib/supabase/server";
@@ -31,6 +32,7 @@ export default async function ProtectedPage() {
             <LogoutButton />
           </div>
         </header>
+        <BatchUpload />
         <GalleryAdmin />
       </div>
     </div>
