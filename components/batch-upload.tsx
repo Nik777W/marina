@@ -12,7 +12,7 @@ interface FileWithPreview {
   file: File;
   compressedBlob?: Blob;
   id: string;
-  status: "pending" | "uploading" | "completed" | "error";
+  status: "pending" | "compressing" | "uploading" | "completed" | "error";
   error?: string;
   width?: number;
   height?: number;
@@ -103,13 +103,13 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
       if (file.type.startsWith("image/")) {
         const id = generateUUID();
         
-        // Add file immediately with pending status
+        // Add file immediately with compressing status
         setFiles((prev) => [
           ...prev,
           {
             file,
             id,
-            status: "pending",
+            status: "compressing",
           },
         ]);
 
@@ -121,7 +121,7 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
           setFiles((prev) =>
             prev.map((f) =>
               f.id === id
-                ? { ...f, compressedBlob: blob, width, height }
+                ? { ...f, compressedBlob: blob, width, height, status: "pending" }
                 : f
             )
           );
@@ -135,7 +135,7 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
             setFiles((prev) =>
               prev.map((f) =>
                 f.id === id
-                  ? { ...f, width: img.naturalWidth, height: img.naturalHeight }
+                  ? { ...f, width: img.naturalWidth, height: img.naturalHeight, status: "pending" }
                   : f
               )
             );
@@ -255,6 +255,8 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
   }, [files, clearAll, onUploadComplete]);
 
   const pendingCount = files.filter((f) => f.status === "pending").length;
+  const compressingCount = files.filter((f) => f.status === "compressing").length;
+  const isReadyToUpload = pendingCount > 0 && compressingCount === 0;
 
   return (
     <div className="flex flex-col gap-4 rounded-lg border border-black/10 bg-white p-4">
@@ -330,6 +332,7 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
                   <span
                     className={cn(
                       "h-2 w-2 shrink-0 rounded-full",
+                      fileWithPreview.status === "compressing" && "bg-amber-400 animate-pulse",
                       fileWithPreview.status === "pending" && "bg-amber-400",
                       fileWithPreview.status === "uploading" && "bg-blue-500",
                       fileWithPreview.status === "completed" && "bg-green-500",
@@ -376,13 +379,18 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
             </div>
           )}
 
-          {pendingCount > 0 && !isUploading && (
+          {isReadyToUpload && !isUploading && (
             <button
               onClick={handleUpload}
               className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/85"
             >
               Загрузить {pendingCount} файл{pendingCount !== 1 ? "а" : ""}
             </button>
+          )}
+          {compressingCount > 0 && (
+            <div className="text-sm text-amber-600">
+              Сжатие {compressingCount} файл{compressingCount !== 1 ? "ов" : ""}...
+            </div>
           )}
         </div>
       )}
