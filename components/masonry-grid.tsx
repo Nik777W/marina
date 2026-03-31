@@ -132,8 +132,8 @@ export function MasonryGrid({ photos }: MasonryGridProps) {
 
   return (
     <>
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 md:px-8 overflow-x-hidden">
-        <div className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3 overflow-x-hidden">
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 md:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {photos.map((photo, index) => (
             <div
               key={photo.id}
