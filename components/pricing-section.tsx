@@ -1,35 +1,35 @@
 const packages = [
   {
-    name: "Мини",
-    price: "15 000 ₽",
+    name: "Mini",
+    price: "200 €",
     features: [
-      "1 час съёмки",
-      "50 фото в обработке",
-      "Онлайн-галерея",
-      "Срок — 5 дней",
+      "1 hora de sesión",
+      "50 fotos editadas",
+      "Galería online",
+      "Entrega — 5 días",
     ],
   },
   {
-    name: "Стандарт",
-    price: "25 000 ₽",
+    name: "Estándar",
+    price: "350 €",
     features: [
-      "2 часа съёмки",
-      "100 фото в обработке",
-      "Онлайн-галерея",
-      "Предварительная консультация",
-      "Срок — 7 дней",
+      "2 horas de sesión",
+      "100 fotos editadas",
+      "Galería online",
+      "Consulta previa",
+      "Entrega — 7 días",
     ],
   },
   {
-    name: "Премиум",
-    price: "40 000 ₽",
+    name: "Premium",
+    price: "500 €",
     features: [
-      "3 часа съёмки",
-      "150+ фото в обработке",
-      "Онлайн-галерея",
-      "Предварительная консультация",
-      "Фотоальбом 20×20 см",
-      "Срок — 10 дней",
+      "3 horas de sesión",
+      "150+ fotos editadas",
+      "Galería online",
+      "Consulta previa",
+      "Álbum 20×20 cm",
+      "Entrega — 10 días",
     ],
   },
 ];
@@ -37,7 +37,7 @@ const packages = [
 export function PricingSection() {
   return (
     <section id="pricing" className="py-20 px-6 max-w-5xl mx-auto overflow-x-hidden">
-      <h2 className="text-xl font-medium text-center mb-10">Стоимость</h2>
+      <h2 className="text-xl font-medium text-center mb-10 pt-[1.4rem]">Precios</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {packages.map((p, index) => (
           <div

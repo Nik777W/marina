@@ -35,7 +35,7 @@ export function Navigation() {
   const MailIcon = (Lucide as any).Mail as IconComponent;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-white px-4 py-4 md:py-6 md:px-8">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-black/10 bg-white px-4 py-2 md:py-4 md:px-8">
       <nav className="mx-auto flex max-w-7xl flex-col md:flex-row items-center justify-between gap-2 md:gap-0">
         {/* Mobile: Row 1 - Title + Icons */}
         <div className="flex w-full items-center justify-between md:hidden">
@@ -79,8 +79,8 @@ export function Navigation() {
 
         {/* Mobile: Nav links below - aligned right under icons */}
         <nav className="flex md:hidden gap-4 text-xs w-full justify-end">
-          <a href="#about" className="text-black/60 hover:text-black transition-colors">Обо мне</a>
-          <a href="#pricing" className="text-black/60 hover:text-black transition-colors">Цены</a>
+          <a href="#about" className="text-black/60 hover:text-black transition-colors">Sobre mí</a>
+          <a href="#pricing" className="text-black/60 hover:text-black transition-colors">Precios</a>
         </nav>
 
         {/* Desktop: Title left, Nav + Icons right */}
@@ -95,8 +95,8 @@ export function Navigation() {
 
         <div className="hidden md:flex items-center gap-6">
           <nav className="flex gap-6 mr-4">
-            <a href="#about" className="text-sm text-black/60 hover:text-black transition-colors">Обо мне</a>
-            <a href="#pricing" className="text-sm text-black/60 hover:text-black transition-colors">Цены</a>
+            <a href="#about" className="text-sm text-black/60 hover:text-black transition-colors">Sobre mí</a>
+            <a href="#pricing" className="text-sm text-black/60 hover:text-black transition-colors">Precios</a>
           </nav>
           <Link
             href="https://www.instagram.com/marikopt?igsh=bWY5Y2Y3amdocXUz&utm_source=qr"

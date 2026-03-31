@@ -85,7 +85,7 @@ export function Footer() {
             <Link
               href="/auth/login"
               className="text-black/50 transition-colors duration-300 hover:text-black/70"
-              aria-label="Войти"
+              aria-label="Iniciar sesión"
             >
               <LoginIcon className="h-4 w-4" strokeWidth={1.5} />
             </Link>
@@ -93,7 +93,7 @@ export function Footer() {
 
           <div className="w-full max-w-md border-t border-black/10 pt-4 text-center">
             <p className="font-sans text-sm font-light text-black/50">
-              &copy; {currentYear} Marina Koptyakova. All rights reserved.
+              &copy; {currentYear} Marina Koptyakova. Todos los derechos reservados.
             </p>
           </div>
         </div>

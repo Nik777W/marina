@@ -2,20 +2,20 @@ import Image from "next/image";
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-20 px-6 max-w-2xl mx-auto text-center overflow-x-hidden">
-      <div className="w-32 h-32 mx-auto mb-6">
+    <section id="about" className="py-20 md:px-6 max-w-3xl md:max-w-none mx-auto md:mx-0 overflow-x-hidden">
+      <div className="clearfix">
         <img
-          src="/marina.webp"
+          src="/marina.webp?v=2"
           alt="Марина Коптякова"
-          className="w-full h-full rounded-full object-cover"
+          className="float-left ml-[8%] mt-[4%] mr-6 mb-4 w-48 h-48 rounded-full object-cover"
         />
+        <h2 className="text-3xl font-medium mb-4 font-handwriting pt-[1.4rem] ml-6">Hola, soy Marina</h2>
+        <p className="text-black/60 leading-relaxed font-handwriting text-3xl ml-6">
+          Fotografío familias, niños y momentos auténticos desde hace 7 años. Creo que la verdadera emoción 
+          está en las cosas simples: en los abrazos, las risas, el baile bajo la lluvia. Mi trabajo es capturar 
+          estos instantes para que puedas volver a ellos una y otra vez.
+        </p>
       </div>
-      <h2 className="text-xl font-medium mb-4">Привет, я Марина</h2>
-      <p className="text-black/60 leading-relaxed">
-        Снимаю семьи, детей и живые моменты уже 7 лет. Верю, что настоящая эмоция — 
-        в простых вещах: в объятиях, смехе, танце под дождём. Моя задача — поймать 
-        эти мгновения, чтобы вы могли возвращаться к ним снова и снова.
-      </p>
     </section>
   );
 }
