@@ -24,7 +24,7 @@ export function GalleryAdmin() {
     setError(null);
     const { data, error: qErr } = await supabase
       .from("gallery_photos")
-      .select("id, storage_path, alt_text, aspect_ratio, is_visible, sort_order")
+      .select("id, storage_path, alt_text, aspect_ratio, is_visible, sort_order, width, height")
       .order("sort_order", { ascending: true });
 
     if (qErr) {
@@ -156,6 +156,9 @@ export function GalleryAdmin() {
                   {!row.is_visible && (
                     <span className="text-xs text-amber-700">скрыто</span>
                   )}
+                </div>
+                <div className="text-xs text-black/40">
+                  {row.width && row.height ? `${row.width}×${row.height}px` : "Размеры не определены"}
                 </div>
                 <input
                   type="text"

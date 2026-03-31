@@ -11,7 +11,7 @@ export async function getVisibleGalleryPhotos(): Promise<GalleryPhotoPublic[]> {
 
     const { data, error } = await supabase
       .from("gallery_photos")
-      .select("id, storage_path, alt_text, aspect_ratio, sort_order")
+      .select("id, storage_path, alt_text, aspect_ratio, sort_order, width, height")
       .eq("is_visible", true)
       .order("sort_order", { ascending: true });
 
@@ -29,6 +29,8 @@ export async function getVisibleGalleryPhotos(): Promise<GalleryPhotoPublic[]> {
       src: getGalleryPublicUrl(row.storage_path),
       alt: row.alt_text || "Gallery image",
       aspectRatio: row.aspect_ratio as GalleryAspectRatio,
+      width: row.width,
+      height: row.height,
     }));
   } catch (err) {
     console.error("getVisibleGalleryPhotos error:", err);

@@ -13,6 +13,8 @@ interface FileWithPreview {
   id: string;
   status: "pending" | "uploading" | "completed" | "error";
   error?: string;
+  width?: number;
+  height?: number;
 }
 
 const ACCEPTED_TYPES = "image/jpeg,image/png,image/webp,image/gif";
@@ -46,18 +48,33 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
   const addFiles = useCallback((fileList: FileList | null) => {
     if (!fileList) return;
 
-    const newFiles: FileWithPreview[] = [];
     Array.from(fileList).forEach((file) => {
       if (file.type.startsWith("image/")) {
-        newFiles.push({
+        const id = generateUUID();
+        const newFile: FileWithPreview = {
           file,
-          id: generateUUID(),
+          id,
           status: "pending",
-        });
+        };
+
+        // Read image dimensions
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          setFiles((prev) =>
+            prev.map((f) =>
+              f.id === id
+                ? { ...f, width: img.naturalWidth, height: img.naturalHeight }
+                : f
+            )
+          );
+        };
+        img.src = objectUrl;
+
+        setFiles((prev) => [...prev, newFile]);
       }
     });
-
-    setFiles((prev) => [...prev, ...newFiles]);
   }, []);
 
   const handleDrop = useCallback(
@@ -130,6 +147,8 @@ export function BatchUpload({ onUploadComplete }: BatchUploadProps) {
             aspect_ratio: "portrait",
             is_visible: true,
             sort_order: maxOrder,
+            width: fileWithPreview.width ?? null,
+            height: fileWithPreview.height ?? null,
           });
 
           if (insErr) throw insErr;

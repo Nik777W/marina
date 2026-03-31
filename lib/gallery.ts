@@ -7,6 +7,8 @@ export type GalleryPhotoRow = {
   aspect_ratio: GalleryAspectRatio;
   is_visible: boolean;
   sort_order: number;
+  width: number | null;
+  height: number | null;
 };
 
 /** Props for the public masonry grid (serializable from server). */
@@ -15,6 +17,8 @@ export type GalleryPhotoPublic = {
   src: string;
   alt: string;
   aspectRatio: GalleryAspectRatio;
+  width: number | null;
+  height: number | null;
 };
 
 const BUCKET = "gallery";
