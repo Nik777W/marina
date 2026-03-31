@@ -127,7 +127,7 @@ export function GalleryAdmin() {
               key={row.id}
               className="flex flex-col gap-3 rounded-lg border border-black/10 bg-white p-4 sm:flex-row"
             >
-              <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-md bg-zinc-100 sm:h-32 sm:w-44">
+              <div className="relative h-20 w-full shrink-0 overflow-hidden rounded-md bg-zinc-100 sm:h-16 sm:w-22">
                 <Image
                   src={getGalleryPublicUrl(row.storage_path)}
                   alt={row.alt_text || "preview"}
