@@ -8,8 +8,8 @@ export default async function Home() {
   const photos = await getVisibleGalleryPhotos();
 
   return (
-    <div className="flex flex-1 flex-col bg-white font-sans text-black">
-      <main className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col bg-white font-sans text-black overflow-x-hidden">
+      <main className="flex flex-1 flex-col overflow-x-hidden">
         <MasonryGrid photos={photos} />
         <AboutSection />
         <PricingSection />
