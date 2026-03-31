@@ -132,12 +132,12 @@ export function MasonryGrid({ photos }: MasonryGridProps) {
 
   return (
     <>
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 md:px-8">
-        <div className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3">
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 md:px-8 overflow-x-hidden">
+        <div className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3 overflow-x-hidden">
           {photos.map((photo, index) => (
             <div
               key={photo.id}
-              className="group relative overflow-hidden bg-zinc-100 break-inside-avoid cursor-pointer"
+              className="group relative overflow-hidden bg-zinc-100 break-inside-avoid cursor-pointer max-w-full"
               onClick={() => openLightbox(index)}
             >
               <Image
@@ -145,7 +145,7 @@ export function MasonryGrid({ photos }: MasonryGridProps) {
                 alt={photo.alt}
                 width={photo.width || 800}
                 height={photo.height || 600}
-                className={`w-full h-auto md:grayscale md:transition-all md:duration-500 md:hover:scale-105 md:hover:grayscale-0 ${
+                className={`w-full h-auto max-w-full md:grayscale md:transition-all md:duration-500 md:hover:scale-105 md:hover:grayscale-0 ${
                   loadedImages.has(photo.id) ? "opacity-100" : "opacity-0"
                 }`}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
