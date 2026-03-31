@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-20 px-6 max-w-2xl mx-auto text-center">
+    <section id="about" className="py-20 px-6 max-w-2xl mx-auto text-center overflow-x-hidden">
       <div className="relative w-32 h-32 mx-auto mb-6">
         <Image
           src="/marina.jpg"

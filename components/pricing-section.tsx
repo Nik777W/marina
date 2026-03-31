@@ -36,7 +36,7 @@ const packages = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-20 px-6 max-w-5xl mx-auto">
+    <section id="pricing" className="py-20 px-6 max-w-5xl mx-auto overflow-x-hidden">
       <h2 className="text-xl font-medium text-center mb-10">Стоимость</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {packages.map((p, index) => (
