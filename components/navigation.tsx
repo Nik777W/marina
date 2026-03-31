@@ -35,6 +35,10 @@ export function Navigation() {
         </Link>
 
         <div className="flex items-center gap-4 md:gap-6">
+          <nav className="hidden md:flex gap-6 mr-4">
+            <a href="#about" className="text-sm text-black/60 hover:text-black transition-colors">Обо мне</a>
+            <a href="#pricing" className="text-sm text-black/60 hover:text-black transition-colors">Цены</a>
+          </nav>
           <Link
             href="https://www.instagram.com/marikopt?igsh=bWY5Y2Y3amdocXUz&utm_source=qr"
             target="_blank"

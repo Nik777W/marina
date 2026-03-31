@@ -1,5 +1,7 @@
 import { Footer } from "@/components/footer";
 import { MasonryGrid } from "@/components/masonry-grid";
+import { AboutSection } from "@/components/about-section";
+import { PricingSection } from "@/components/pricing-section";
 import { getVisibleGalleryPhotos } from "@/lib/gallery/queries";
 
 export default async function Home() {
@@ -9,6 +11,8 @@ export default async function Home() {
     <div className="flex flex-1 flex-col bg-white font-sans text-black">
       <main className="flex flex-1 flex-col">
         <MasonryGrid photos={photos} />
+        <AboutSection />
+        <PricingSection />
         <Footer />
       </main>
     </div>
