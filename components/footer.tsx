@@ -12,9 +12,23 @@ type IconComponent = ComponentType<{
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const InstagramIcon = (Lucide as any).Instagram
-    ? ((Lucide as any).Instagram as IconComponent)
-    : ((Lucide as any).Camera as IconComponent);
+  // Custom Instagram icon that looks more like the real Instagram logo
+  const InstagramIcon = ({ className, strokeWidth = 1.5 }: { className?: string; strokeWidth?: number }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect x="2" y="2" width="20" height="20" rx="6" ry="6" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="18" cy="6" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+  );
 
   const TelegramIcon = (Lucide as any).Send
     ? ((Lucide as any).Send as IconComponent)
