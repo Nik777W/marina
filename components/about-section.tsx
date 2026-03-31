@@ -5,7 +5,7 @@ export function AboutSection() {
     <section id="about" className="py-20 px-6 max-w-2xl mx-auto text-center overflow-x-hidden">
       <div className="w-32 h-32 mx-auto mb-6">
         <img
-          src="/marina.jpg"
+          src="/marina.webp"
           alt="Марина Коптякова"
           className="w-full h-full rounded-full object-cover"
         />
