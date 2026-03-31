@@ -137,7 +137,7 @@ export function MasonryGrid({ photos }: MasonryGridProps) {
           {photos.map((photo, index) => (
             <div
               key={photo.id}
-              className="group relative overflow-hidden bg-zinc-100 break-inside-avoid cursor-pointer max-w-full"
+              className="group relative overflow-hidden bg-zinc-100 break-inside-avoid cursor-pointer max-w-full mb-4"
               onClick={() => openLightbox(index)}
             >
               <Image
