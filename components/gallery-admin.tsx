@@ -3,16 +3,9 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
-import type { GalleryAspectRatio, GalleryPhotoRow } from "@/lib/gallery";
+import type { GalleryPhotoRow } from "@/lib/gallery";
 import { getGalleryPublicUrl } from "@/lib/gallery";
 import { createClient } from "@/lib/supabase/client";
-
-const ASPECT_OPTIONS: GalleryAspectRatio[] = [
-  "portrait",
-  "landscape",
-  "square",
-  "tall",
-];
 
 export function GalleryAdmin() {
   const [rows, setRows] = useState<GalleryPhotoRow[]>([]);
@@ -40,12 +33,12 @@ export function GalleryAdmin() {
     void load();
   }, [load]);
 
-  async function saveMeta(id: string, alt_text: string, aspect_ratio: GalleryAspectRatio) {
+  async function saveMeta(id: string, alt_text: string) {
     const supabase = createClient();
     setError(null);
     const { error: uErr } = await supabase
       .from("gallery_photos")
-      .update({ alt_text, aspect_ratio })
+      .update({ alt_text })
       .eq("id", id);
     if (uErr) setError(uErr.message);
     else await load();
@@ -169,25 +162,11 @@ export function GalleryAdmin() {
                   onBlur={(e) => {
                     const v = e.target.value;
                     if (v !== row.alt_text) {
-                      void saveMeta(row.id, v, row.aspect_ratio);
+                      void saveMeta(row.id, v);
                     }
                   }}
                 />
                 <div className="flex flex-wrap items-center gap-2">
-                  <select
-                    value={row.aspect_ratio}
-                    className="rounded border border-black/15 px-2 py-1 text-sm"
-                    onChange={(e) => {
-                      const ar = e.target.value as GalleryAspectRatio;
-                      void saveMeta(row.id, row.alt_text, ar);
-                    }}
-                  >
-                    {ASPECT_OPTIONS.map((o) => (
-                      <option key={o} value={o}>
-                        {o}
-                      </option>
-                    ))}
-                  </select>
                   <div className="flex gap-1">
                     <button
                       type="button"
