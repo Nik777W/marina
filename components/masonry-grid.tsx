@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import type { GalleryPhotoPublic } from "@/lib/gallery";
 
@@ -11,21 +11,52 @@ type MasonryGridProps = {
 
 export function MasonryGrid({ photos }: MasonryGridProps) {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
-  const [selectedPhoto, setSelectedPhoto] = useState<GalleryPhotoPublic | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   const handleImageLoad = (id: string) => {
     setLoadedImages((prev) => new Set(prev).add(id));
   };
 
-  // Close lightbox on ESC key
+  const openLightbox = useCallback((index: number) => {
+    setSelectedIndex(index);
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    setSelectedIndex(null);
+  }, []);
+
+  const goToPrev = useCallback(() => {
+    if (selectedIndex === null) return;
+    setSelectedIndex(selectedIndex > 0 ? selectedIndex - 1 : photos.length - 1);
+  }, [selectedIndex, photos.length]);
+
+  const goToNext = useCallback(() => {
+    if (selectedIndex === null) return;
+    setSelectedIndex(selectedIndex < photos.length - 1 ? selectedIndex + 1 : 0);
+  }, [selectedIndex, photos.length]);
+
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setSelectedPhoto(null);
+      if (selectedIndex === null) return;
+      
+      switch (e.key) {
+        case "Escape":
+          closeLightbox();
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          goToPrev();
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          goToNext();
+          break;
       }
     };
 
-    if (selectedPhoto) {
+    if (selectedIndex !== null) {
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
     }
@@ -34,7 +65,32 @@ export function MasonryGrid({ photos }: MasonryGridProps) {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "auto";
     };
-  }, [selectedPhoto]);
+  }, [selectedIndex, closeLightbox, goToPrev, goToNext]);
+
+  // Touch/swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+
+    if (Math.abs(diff) > minSwipeDistance) {
+      if (diff > 0) {
+        // Swipe left - next
+        goToNext();
+      } else {
+        // Swipe right - prev
+        goToPrev();
+      }
+    }
+    
+    setTouchStart(null);
+  };
 
   if (photos.length === 0) {
     return (
@@ -46,15 +102,17 @@ export function MasonryGrid({ photos }: MasonryGridProps) {
     );
   }
 
+  const selectedPhoto = selectedIndex !== null ? photos[selectedIndex] : null;
+
   return (
     <>
       <section className="mx-auto w-full max-w-6xl px-4 py-12 md:px-8">
         <div className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3">
-          {photos.map((photo) => (
+          {photos.map((photo, index) => (
             <div
               key={photo.id}
               className="group relative overflow-hidden bg-zinc-100 break-inside-avoid cursor-pointer"
-              onClick={() => setSelectedPhoto(photo)}
+              onClick={() => openLightbox(index)}
             >
               <Image
                 src={photo.src}
@@ -78,9 +136,42 @@ export function MasonryGrid({ photos }: MasonryGridProps) {
       {/* Lightbox */}
       {selectedPhoto && (
         <div
-          onClick={() => setSelectedPhoto(null)}
+          onClick={closeLightbox}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
         >
+          {/* Navigation arrows */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              goToPrev();
+            }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+          
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              goToNext();
+            }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
+
+          {/* Counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm">
+            {selectedIndex !== null ? selectedIndex + 1 : 0} / {photos.length}
+          </div>
+
+          {/* Image */}
           <Image
             src={selectedPhoto.src}
             alt={selectedPhoto.alt}
