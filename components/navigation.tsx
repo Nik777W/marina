@@ -29,7 +29,7 @@ export function Navigation() {
           <span className="font-serif text-2xl tracking-wide text-black md:text-3xl">
             Marina Koptyakova
           </span>
-          <span className="font-sans text-xs font-light uppercase tracking-[0.2em] text-black md:text-sm">
+          <span className="mt-1 font-sans text-xs font-light uppercase tracking-[0.2em] text-black md:text-sm max-w-full truncate">
             Lifestyle & Family Photographer
           </span>
         </Link>
