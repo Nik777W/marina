@@ -3,14 +3,11 @@ import Image from "next/image";
 export function AboutSection() {
   return (
     <section id="about" className="py-20 px-6 max-w-2xl mx-auto text-center overflow-x-hidden">
-      <div className="relative w-32 h-32 mx-auto mb-6">
-        <Image
+      <div className="w-32 h-32 mx-auto mb-6">
+        <img
           src="/marina.jpg"
           alt="Марина Коптякова"
-          fill
-          className="rounded-full object-cover"
-          unoptimized
-          priority
+          className="w-full h-full rounded-full object-cover"
         />
       </div>
       <h2 className="text-xl font-medium mb-4">Привет, я Марина</h2>
