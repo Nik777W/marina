@@ -35,22 +35,18 @@ export function Navigation() {
   const MailIcon = (Lucide as any).Mail as IconComponent;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-white px-4 py-6 md:px-8">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between">
-        <Link href="/" className="flex flex-col">
-          <span className="font-serif text-2xl tracking-wide text-black md:text-3xl">
+    <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-white px-4 py-4 md:py-6 md:px-8">
+      <nav className="mx-auto flex max-w-7xl flex-col md:flex-row items-center justify-between gap-2 md:gap-0">
+        <Link href="/" className="flex flex-col items-center md:items-start">
+          <span className="font-serif text-xl md:text-2xl tracking-wide text-black lg:text-3xl">
             Marina Koptyakova
           </span>
-          <span className="mt-1 font-sans text-xs font-light uppercase tracking-[0.2em] text-black md:text-sm max-w-full truncate">
+          <span className="mt-1 font-sans text-[10px] md:text-xs font-light uppercase tracking-[0.15em] md:tracking-[0.2em] text-black max-w-full truncate">
             Lifestyle & Family Photographer
           </span>
         </Link>
 
-        <div className="flex items-center gap-4 md:gap-6">
-          <nav className="hidden md:flex gap-6 mr-4">
-            <a href="#about" className="text-sm text-black/60 hover:text-black transition-colors">Обо мне</a>
-            <a href="#pricing" className="text-sm text-black/60 hover:text-black transition-colors">Цены</a>
-          </nav>
+        <div className="flex items-center gap-3 md:gap-6">
           <Link
             href="https://www.instagram.com/marikopt?igsh=bWY5Y2Y3amdocXUz&utm_source=qr"
             target="_blank"
@@ -77,6 +73,16 @@ export function Navigation() {
             <MailIcon className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
           </Link>
         </div>
+
+        <nav className="flex md:hidden gap-4 text-xs">
+          <a href="#about" className="text-black/60 hover:text-black transition-colors">Обо мне</a>
+          <a href="#pricing" className="text-black/60 hover:text-black transition-colors">Цены</a>
+        </nav>
+
+        <nav className="hidden md:flex gap-6">
+          <a href="#about" className="text-sm text-black/60 hover:text-black transition-colors">Обо мне</a>
+          <a href="#pricing" className="text-sm text-black/60 hover:text-black transition-colors">Цены</a>
+        </nav>
       </nav>
     </header>
   );
