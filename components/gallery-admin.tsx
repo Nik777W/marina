@@ -150,9 +150,6 @@ export function GalleryAdmin() {
                     <span className="text-xs text-amber-700">скрыто</span>
                   )}
                 </div>
-                <div className="text-xs text-black/40">
-                  {row.width && row.height ? `${row.width}×${row.height}px` : "Размеры не определены"}
-                </div>
                 <input
                   type="text"
                   defaultValue={row.alt_text}
